@@ -1,0 +1,5 @@
+# Info on formatting this file at
+# https://blog.github.com/2017-07-06-introducing-code-owners/
+
+# These owners will be the default owners for everything in the repo.
+*       @scasplte2 @SeanCheatham @mgrand-topl @admiraladmirable
