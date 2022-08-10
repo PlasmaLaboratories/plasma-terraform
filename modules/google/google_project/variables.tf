@@ -30,5 +30,5 @@ variable "enabled_service_apis" {
     "cloudresourcemanager.googleapis.com"
   ]
 
-  desctiption = "List of service apis to enable for the project (access to specific resources) https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_service."
+  description = "List of service apis to enable for the project (access to specific resources) https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_service."
 }
