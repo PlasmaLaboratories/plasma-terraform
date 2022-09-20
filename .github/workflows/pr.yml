@@ -21,3 +21,9 @@ jobs:
 
     - name: Check Terraform config formatting 
       run: terraform fmt -write=false -recursive
+
+    - name: Run Checkov action
+      id: checkov
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: modules/

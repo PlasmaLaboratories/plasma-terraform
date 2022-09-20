@@ -5,5 +5,5 @@ variable "folder_name" {
 
 variable "parent" {
   type        = string
-  description = "description"
+  description = "Parent for the folder. Can be another an organization, or another folder."
 }

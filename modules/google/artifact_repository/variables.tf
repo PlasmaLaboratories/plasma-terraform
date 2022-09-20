@@ -19,3 +19,8 @@ variable "format" {
   default     = "docker"
   description = "Which type of artifact repo to create. (ex: docker)."
 }
+
+variable "kms_key_name" {
+  type        = string
+  description = "KMS encryption key for artifact registry."
+}

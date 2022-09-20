@@ -24,6 +24,12 @@ jobs:
     - name: Check Terraform config formatting 
       run: terraform fmt -write=false -recursive
 
+    - name: Run Checkov action
+      id: checkov
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: modules/
+
     - name: Bump version and push tag
       uses: anothrNick/github-tag-action@1.36.0
       env:

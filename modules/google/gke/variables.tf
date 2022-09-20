@@ -29,10 +29,46 @@ variable "subnetwork_name" {
   description = "Subnet name for your GKE cluster."
 }
 
+variable "enable_private_nodes" {
+  type        = bool
+  default     = true
+  description = "Make cluster private, and only allow external IP traffic by configuring a Cloud Router."
+}
+
+variable "enable_private_endpoint" {
+  type        = bool
+  default     = false
+  description = "Enable private endpoint, where only internal GCP services can interact with the node. Default to false so we can manage access via master authorized networks."
+}
+
 variable "subnetwork_cidr_range" {
   type        = string
   default     = "10.2.0.0/20"
   description = "https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr"
+}
+
+variable "services_ip_cidr_range" {
+  type        = string
+  default     = "10.15.0.0/20"
+  description = "https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr"
+}
+
+variable "pods_ip_cidr_range" {
+  type        = string
+  default     = "10.16.0.0/14"
+  description = "https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr"
+}
+
+variable "master_ipv4_cidr_block" {
+  type        = string
+  default     = "172.19.0.0/28"
+  description = "IP CIDR range for hosted master network. https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#master_ipv4_cidr_block"
+}
+
+variable "master_authorized_networks_cidr_blocks" {
+  type        = string
+  default     = ""
+  description = "CIDR ranges for whitelist of IPs that can access kube api."
 }
 
 variable "stack_type" {
@@ -53,16 +89,10 @@ variable "enable_dataplane_v2" {
   description = "Boolean to enable GKE Dataplane V2 https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2"
 }
 
-variable "services_ip_cidr_range" {
-  type        = string
-  default     = "172.15.0.0/20"
-  description = "https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr"
-}
-
-variable "pods_ip_cidr_range" {
-  type        = string
-  default     = "172.16.0.0/14"
-  description = "https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr"
+variable "enable_binary_authorization" {
+  type        = bool
+  default     = true
+  description = "Enable to only allow publically signed Docker images https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#enabled"
 }
 
 # google_commpute_network
@@ -77,6 +107,18 @@ variable "container_cluster_name" {
   type        = string
   default     = "gke-primary-cluster"
   description = "GKE primary cluster name (without nodes)."
+}
+
+variable "enable_vertical_pod_autoscaling" {
+  type        = bool
+  default     = true
+  description = "Allow GKE to dynamically update pod resource allocations based on usage."
+}
+
+variable "gke_security_groups" {
+  type        = string
+  default     = "gke-security-groups@topl.me"
+  description = "Name of the GKE security group. Must be created beforehand."
 }
 
 # google_container_node_pool
