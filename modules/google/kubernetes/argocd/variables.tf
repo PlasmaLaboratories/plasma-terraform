@@ -1,6 +1,5 @@
 variable "cluster_name" {
   type        = string
-  default     = ""
   description = "Name of the k8s cluster to authenticate to."
 }
 

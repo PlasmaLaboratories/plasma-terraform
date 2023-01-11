@@ -1,10 +1,10 @@
 # GCP project definition.
 resource "google_project" "project" {
-  name            = var.project_name
-  project_id      = var.project_id
-  folder_id       = var.folder_id
-  billing_account = var.billing_account
-  auto_create_network   = false
+  name                = var.project_name
+  project_id          = var.project_id
+  folder_id           = var.folder_id
+  billing_account     = var.billing_account
+  auto_create_network = false
 }
 
 # Enable necessary project service apis.

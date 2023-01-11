@@ -3,5 +3,5 @@ module "oidc" {
   project_id  = var.project_id
   pool_id     = var.pool_id
   provider_id = var.provider_id
-  sa_mapping = var.sa_mapping
+  sa_mapping  = var.sa_mapping
 }

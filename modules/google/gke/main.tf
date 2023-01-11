@@ -21,10 +21,10 @@ resource "google_compute_subnetwork" "custom" {
   region        = var.region
   network       = google_compute_network.custom.id
 
-  stack_type = var.stack_type
+  stack_type       = var.stack_type
   ipv6_access_type = var.ipv6_access_type
 
-  private_ip_google_access = true
+  private_ip_google_access   = true
   private_ipv6_google_access = "ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE"
 
   secondary_ip_range {
@@ -51,7 +51,7 @@ resource "google_compute_router" "router" {
 }
 
 resource "google_compute_router_nat" "nat" {
-  name  = format("%s-nat", var.container_cluster_name)
+  name = format("%s-nat", var.container_cluster_name)
 
   router = google_compute_router.router.name
   region = google_compute_router.router.region
@@ -77,14 +77,14 @@ resource "google_compute_router_nat" "nat" {
 }
 
 resource "google_container_cluster" "primary" {
-	# checkov:skip=CKV_GCP_24: Pod security policy is deprecated in GKE. Recommended way is to use PodSecurity controller. TODO: Implement a modern controller like Gatekeeper.
-	# checkov:skip=CKV_GCP_18: We are using master authorized networks, so this is unnecessary.
-	# checkov:skip=CKV_GCP_12: Dataplane V2 does not need network policy to be enabled: https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2
-	# checkov:skip=CKV_GCP_21: No need for labels just yet.
-	# checkov:skip=CKV_GCP_69: Check is outdated, new check uses mode = .
-	# checkov:skip=CKV_GCP_66: This option is deprecated. Use binary_authorization instead: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#nested_binary_authorization.
+  # checkov:skip=CKV_GCP_24: Pod security policy is deprecated in GKE. Recommended way is to use PodSecurity controller. TODO: Implement a modern controller like Gatekeeper.
+  # checkov:skip=CKV_GCP_18: We are using master authorized networks, so this is unnecessary.
+  # checkov:skip=CKV_GCP_12: Dataplane V2 does not need network policy to be enabled: https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2
+  # checkov:skip=CKV_GCP_21: No need for labels just yet.
+  # checkov:skip=CKV_GCP_69: Check is outdated, new check uses mode = .
+  # checkov:skip=CKV_GCP_66: This option is deprecated. Use binary_authorization instead: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#nested_binary_authorization.
   provider = google-beta
-  
+
   name     = var.container_cluster_name
   location = var.primary_cluster_location
 
@@ -106,14 +106,14 @@ resource "google_container_cluster" "primary" {
   min_master_version = 1.22
 
   private_cluster_config {
-    enable_private_nodes = var.enable_private_nodes
+    enable_private_nodes    = var.enable_private_nodes
     enable_private_endpoint = var.enable_private_endpoint
-    master_ipv4_cidr_block = var.master_ipv4_cidr_block
+    master_ipv4_cidr_block  = var.master_ipv4_cidr_block
   }
 
   master_authorized_networks_config {
     cidr_blocks {
-      cidr_block = "0.0.0.0/0"
+      cidr_block   = "0.0.0.0/0"
       display_name = "Public access"
     }
   }
@@ -144,7 +144,7 @@ resource "google_container_cluster" "primary" {
       enabled = true
     }
   }
-  
+
   master_auth {
     client_certificate_config {
       issue_client_certificate = false
@@ -157,11 +157,11 @@ resource "google_container_cluster" "primary" {
 
   node_config {
     workload_metadata_config {
-       mode = "GKE_METADATA"
-     }
+      mode = "GKE_METADATA"
+    }
 
     shielded_instance_config {
-      enable_secure_boot = true
+      enable_secure_boot          = true
       enable_integrity_monitoring = true
     }
   }
@@ -181,14 +181,14 @@ resource "google_container_node_pool" "primary_node_pool" {
     # https://cloud.google.com/kubernetes-engine/docs/how-to/preemptible-vms
     preemptible  = var.container_node_pool_preemptible
     machine_type = var.container_node_pool_machine_type
-    image_type   = "COS"
+    image_type   = "COS_CONTAINERD"
 
     workload_metadata_config {
       mode = "GKE_METADATA"
     }
 
     shielded_instance_config {
-      enable_secure_boot = true
+      enable_secure_boot          = true
       enable_integrity_monitoring = true
     }
 
@@ -198,37 +198,11 @@ resource "google_container_node_pool" "primary_node_pool" {
   }
 
   management {
-    auto_repair = true
+    auto_repair  = true
     auto_upgrade = true
   }
 
   depends_on = [
     google_container_cluster.primary
   ]
-}
-
-# Enable RBAC for Google Groups
-data "google_client_config" "default" {}
-
-provider "kubernetes" {
-  host     = "https://${google_container_cluster.primary.endpoint}"
-
-  token = "${data.google_client_config.default.access_token}"
-  cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
-}
-
-resource "kubernetes_cluster_role_binding" "rbac" {
-  metadata {
-    name = "google groups RBAC"
-  }
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "cluster-admin"
-  }
-  subject {
-    kind      = "Group"
-    name      = "gke-security-groups@topl.me"
-    api_group = "rbac.authorization.k8s.io"
-  }
 }
