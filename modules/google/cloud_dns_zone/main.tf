@@ -8,10 +8,11 @@ resource "google_dns_managed_zone" "zone" {
   description = var.description
 
   dnssec_config {
-    state = "on"
+    state = var.dnssec_state
   }
 }
 
 data "google_dns_keys" "keys" {
+  count        = var.dnssec_state == "on" ? 1 : 0
   managed_zone = google_dns_managed_zone.zone.id
 }

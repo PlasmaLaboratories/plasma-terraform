@@ -13,6 +13,12 @@ variable "dns_name" {
   description = "Name of the domain/subdomain managed in Cloud DNS."
 }
 
+variable "dnssec_state" {
+  type        = string
+  default     = "on"
+  description = "DNSSEC state for the zone. (off|on|transfer)"
+}
+
 variable "description" {
   type        = string
   default     = "Terraform managed DNS zone."
