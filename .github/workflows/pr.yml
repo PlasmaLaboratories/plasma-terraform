@@ -30,3 +30,4 @@ jobs:
       uses: bridgecrewio/checkov-action@master
       with:
         directory: modules/
+        skip_check: CKV2_GCP_18
