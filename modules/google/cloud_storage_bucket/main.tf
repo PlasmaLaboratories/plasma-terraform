@@ -12,6 +12,7 @@ resource "google_storage_bucket" "bucket" {
   labels                      = var.labels
   uniform_bucket_level_access = var.uniform_bucket_level_access
   public_access_prevention    = var.public_access_prevention
+  project                     = var.project_id
 
 
   dynamic "lifecycle_rule" {
