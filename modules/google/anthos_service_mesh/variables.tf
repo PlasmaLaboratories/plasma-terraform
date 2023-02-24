@@ -38,3 +38,11 @@ variable "enable_fleet_registration" {
   default     = true
   description = "Determines whether the module registers the cluster to the fleet."
 }
+
+variable "gke_endpoint" {
+  description = "Endpoint of the GKE cluster."
+}
+
+variable "gke_ca_certificate" {
+  description = "Encoded CA certificate of the GKE cluster."
+}

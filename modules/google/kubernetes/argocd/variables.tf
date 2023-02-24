@@ -20,3 +20,11 @@ variable "argo_cd_values_yaml_file" {
   default     = ""
   description = "Path to the values.yaml file for ArgoCD. https://github.com/argoproj/argo-helm/blob/main/charts/argo-cd/values.yaml"
 }
+
+variable "gke_endpoint" {
+  description = "Endpoint of the GKE cluster."
+}
+
+variable "gke_ca_certificate" {
+  description = "Encoded CA certificate of the GKE cluster."
+}
