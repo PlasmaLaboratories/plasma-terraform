@@ -1,9 +1,3 @@
-variable "key_ring_name" {
-  type        = string
-  default     = "shared-keyring"
-  description = "Name of the key ring."
-}
-
 variable "key_ring_id" {
   type        = string
   description = "ID of the key ring."
@@ -13,12 +7,6 @@ variable "kms_key_name" {
   type        = string
   default     = "kms-key"
   description = "Name for the kms key."
-}
-
-variable "key_location" {
-  type        = string
-  default     = "global"
-  description = "https://cloud.google.com/kms/docs/locations"
 }
 
 variable "purpose" {
@@ -37,11 +25,6 @@ variable "rotation_period" {
   type        = string
   default     = "7776000s" # Every 90 days
   description = "Period to automatically rotate keys. Not usable for purpose: ASYMMETRIC_SIGN."
-}
-
-variable "project_id" {
-  type        = string
-  description = "id of the project."
 }
 
 variable "project_number" {

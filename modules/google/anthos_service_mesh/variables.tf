@@ -40,9 +40,11 @@ variable "enable_fleet_registration" {
 }
 
 variable "gke_endpoint" {
+  type        = string
   description = "Endpoint of the GKE cluster."
 }
 
 variable "gke_ca_certificate" {
+  type        = string
   description = "Encoded CA certificate of the GKE cluster."
 }

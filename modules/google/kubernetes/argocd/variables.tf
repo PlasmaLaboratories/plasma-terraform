@@ -1,8 +1,3 @@
-variable "cluster_name" {
-  type        = string
-  description = "Name of the k8s cluster to authenticate to."
-}
-
 variable "project_id" {
   type        = string
   description = "Id for the Google Cloud project."
@@ -22,9 +17,11 @@ variable "argo_cd_values_yaml_file" {
 }
 
 variable "gke_endpoint" {
+  type        = string
   description = "Endpoint of the GKE cluster."
 }
 
 variable "gke_ca_certificate" {
+  type        = string
   description = "Encoded CA certificate of the GKE cluster."
 }

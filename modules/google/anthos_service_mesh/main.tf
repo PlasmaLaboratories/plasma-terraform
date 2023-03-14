@@ -13,6 +13,7 @@ provider "kubernetes" {
 
 module "asm" {
   source                    = "terraform-google-modules/kubernetes-engine/google//modules/asm"
+  version                   = "~> 25.0"
   project_id                = var.project_id
   cluster_name              = var.cluster_name
   cluster_location          = var.region
