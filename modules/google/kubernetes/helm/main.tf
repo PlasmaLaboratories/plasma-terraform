@@ -11,7 +11,6 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(var.gke_ca_certificate)
 }
 
-# Additional products to install into the cluster
 provider "helm" {
   kubernetes {
     host                   = "https://${var.gke_endpoint}"
@@ -21,16 +20,16 @@ provider "helm" {
 }
 
 # Argo CD
-resource "helm_release" "argo_cd" {
-  name             = "argocd"
-  repository       = "https://argoproj.github.io/argo-helm"
-  chart            = "argo-cd"
-  version          = "5.16.0" # https://github.com/argoproj/argo-helm/releases
-  namespace        = "argocd"
+resource "helm_release" "release" {
+  name             = var.helm_release_name
+  repository       = var.helm_repository
+  chart            = var.helm_chart
+  version          = var.chart_version
+  namespace        = var.namespace
   create_namespace = true
   cleanup_on_fail  = true
 
   values = [
-    file(var.argo_cd_values_yaml_file)
+    file(var.values_yaml_file)
   ]
 }

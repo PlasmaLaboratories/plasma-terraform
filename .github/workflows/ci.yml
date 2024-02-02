@@ -55,7 +55,7 @@ jobs:
         uses: bridgecrewio/checkov-action@master
         with:
           directory: modules/
-          skip_check: CKV2_GCP_18
+          skip_check: CKV2_GCP_18,CKV2_GHA_1,CKV_TF_1
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0

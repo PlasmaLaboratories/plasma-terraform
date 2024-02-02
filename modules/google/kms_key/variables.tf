@@ -27,13 +27,8 @@ variable "rotation_period" {
   description = "Period to automatically rotate keys. Not usable for purpose: ASYMMETRIC_SIGN."
 }
 
-variable "project_number" {
-  type        = string
-  description = "Number of the project."
-}
+variable "service_account_bindings" {
+  type = set(string)
 
-variable "create_artifact_registry_iam_binding" {
-  type        = bool
-  default     = false
-  description = "Create the GCP binding to allow the Artifact Registry account to encrypt/decrypt using this key."
+  description = "List of service accounts to bind to this key."
 }

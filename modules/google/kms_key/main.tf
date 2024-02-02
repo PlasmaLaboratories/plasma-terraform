@@ -16,13 +16,9 @@ resource "google_kms_crypto_key" "key" {
 }
 
 resource "google_kms_crypto_key_iam_binding" "key_binding" {
-  count         = var.create_artifact_registry_iam_binding ? 1 : 0
   crypto_key_id = google_kms_crypto_key.key.id
 
   role = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
 
-  members = [
-    "serviceAccount:service-${var.project_number}@compute-system.iam.gserviceaccount.com",
-    "serviceAccount:service-${var.project_number}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
-  ]
+  members = var.service_account_bindings
 }

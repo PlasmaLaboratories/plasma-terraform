@@ -33,17 +33,7 @@ variable "project_roles" {
 variable "folder_roles" {
   type = set(string)
 
-  default = [
-    "roles/resourcemanager.folderAdmin",
-    "roles/resourcemanager.projectCreator",
-    "roles/serviceusage.serviceUsageViewer",
-    "roles/container.admin", # Set at the project level to access the GKE resources for other projects managed by us.
-    "roles/compute.admin",
-    "roles/iam.serviceAccountTokenCreator",
-    "roles/iam.serviceAccountViewer",
-    "roles/iam.serviceAccountUser",
-    "roles/iam.workloadIdentityPoolAdmin"
-  ]
+  default = []
 
   description = "List of Google Cloud roles set at a folder level."
 }
