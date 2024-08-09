@@ -32,3 +32,25 @@ variable "enabled_service_apis" {
 
   description = "List of service apis to enable for the project (access to specific resources) https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/google_project_service."
 }
+
+variable "audit_log_config" {
+  type = list(any)
+  default = [
+    {
+      log_type = "ADMIN_READ"
+      exempted_members = [
+      ]
+    },
+    {
+      log_type = "DATA_READ"
+      exempted_members = [
+      ]
+    },
+    {
+      log_type = "DATA_WRITE"
+      exempted_members = [
+      ]
+    }
+  ]
+  description = "List of audit log configurations for each type."
+}

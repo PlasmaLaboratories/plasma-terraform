@@ -19,13 +19,12 @@ resource "google_project_service" "service_apis" {
 resource "google_project_iam_audit_config" "project_audit" {
   project = google_project.project.id
   service = "allServices"
-  audit_log_config {
-    log_type = "ADMIN_READ"
-  }
-  audit_log_config {
-    log_type = "DATA_READ"
-  }
-  audit_log_config {
-    log_type = "DATA_WRITE"
+
+  dynamic "audit_log_config" {
+    for_each = var.audit_log_config
+    content {
+      log_type = audit_log_config.value["log_type"]
+      exempted_members = audit_log_config.value["exempted_members"]
+    }
   }
 }
