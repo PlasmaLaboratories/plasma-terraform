@@ -23,7 +23,7 @@ resource "google_project_iam_audit_config" "project_audit" {
   dynamic "audit_log_config" {
     for_each = var.audit_log_config
     content {
-      log_type = audit_log_config.value["log_type"]
+      log_type         = audit_log_config.value["log_type"]
       exempted_members = audit_log_config.value["exempted_members"]
     }
   }
